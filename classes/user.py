@@ -10,9 +10,17 @@ class User:
         self.ftname = ftname
         self.login = login
         self.password = password
-        self.caves = """SQL REQUEST GET CAVES"""
+        self.caves = User.getcave()
 
-    def getcave():
+
+    def connection(name,ftname,login):
         pass
+
+    def getcave(self, cur, session):
+        cur.execute("SELECT * FROM public.cave WHERE iduser_fk=%s", (session['user'].login,))
+        data = cur.fetchall()
+        self.caves = data
+
+
 
         
