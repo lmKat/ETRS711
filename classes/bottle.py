@@ -21,6 +21,9 @@ class Bottle:
     def __str__(self):
         return f"{self.name} de {self.domain}, millésime {self.year} | {self.price}€"
 
+    def create_bottle():
+        raise NotImplementedError
+
     def archive_bottle(self):
         raise NotImplementedError
 
