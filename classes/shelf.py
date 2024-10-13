@@ -26,3 +26,6 @@ class Shelf:
 
     def count_bottles(self):
         return self.nb_bottles
+
+    def add_bottles(self, bottle):
+        self.bottles.append(bottle)

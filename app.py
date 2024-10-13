@@ -5,6 +5,7 @@ import psycopg2 as sql
 
 #FLASK DEFINITION
 app = Flask(__name__)
+app.secret_key = "RTUHDGIOUDGIDGROUOHFIE"
 
 #POSTGRE DEFINITION
 conn = sql.connect("dbname=711Python user=root password=root")
@@ -24,11 +25,16 @@ def auth():
     #SQL QUERY GET USER INFO
     cur.execute("SELECT * FROM public.user WHERE login=%s", (user,))
     data = cur.fetchall()  # DATA EXEMPLE : [(1, 'CHALVIN', 'Axel', 'chalviax', 'axel')]
-    if len(data) != 0 :
-        if data[0][3] == user and data[0][4] == password: #IF USERNAME EXISTS (!=0) AND PASSWORD IS CORRECT
-            #User.connection(data[0][1], data[0][2], data[0][3])
-            session['user'] = User(data[0][1], data[0][2], data[0][3], data[0][4], None)
-            return render_template("welcome.html", user=user, name=data[0][1], ftname=data[0][2])
+    if data:
+        if data[0][3] == user and data[0][4] == password: #IF USERNAME AND PASSWORD ARE CORRECT
+            user_obj = User(data[0][1], data[0][2], data[0][3], data[0][4], None)
+            session['user'] = {
+                'userid' : data[0][0],
+                'name' : data[0][1],
+                'ftname' : data[0][2],
+                'login' : data[0][3]
+            }
+            return render_template("welcome.html", user=user_obj)
         else:
             return render_template("connection.html", error="Nom d'utilisateur inconnu ou mot de passe incorrect")
     else:
@@ -36,7 +42,7 @@ def auth():
 
 @app.route("/cave", methods=['POST'])
 def cave():
-    session['user'].getcave(cur,session)
+    User.getcave(cur, session['user'])
     return render_template("cave.html", user=session['user'])
 
 

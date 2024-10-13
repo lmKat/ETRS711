@@ -5,7 +5,7 @@ class Cave:
     # shelves list of shelves
 
     #Constructor
-    def __init__(self, shelves, identifier):
+    def __init__(self, shelves, id):
         self.id = id
         self.shelves = shelves
         self.nb_bottle = 0
@@ -16,8 +16,6 @@ class Cave:
         for shelf in self.shelves:
             res += shelf.count_bottles()
 
-
-
     def get_shelves(identifier):
         shelves = []
         """requete sql SELCT * FROM etagere WHERE cave.id= id
@@ -27,4 +25,5 @@ class Cave:
         identifier = None
         return Cave(nb_bottle, shelves, identifier)
 
-
+    def add_shelf(self, shelf):
+        self.shelves.append(shelf)
