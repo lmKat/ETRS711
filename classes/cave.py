@@ -7,7 +7,7 @@ class Cave:
     #Constructor
     def __init__(self, shelves, id):
         self.id = id
-        self.shelves = shelves
+        self.shelves = shelves if shelves is not None else []
         self.nb_bottle = 0
 
 

@@ -5,11 +5,11 @@ class Shelf:
     # bottles : instances of Bottle
 
     #Constructor
-    def __init__(self, nb, available_space, nb_bottles, bottles):
-        self.nb = nb
+    def __init__(self, idshelf, available_space, nb_bottles, bottles=None):
+        self.idshelf = idshelf
         self.available_space = available_space
         self.nb_bottles = nb_bottles
-        self.bottles = """SQL REQUEST GET BOTTLES"""
+        self.bottles = bottles if bottles is not None else []
 
     def add_bottle(self, bottle):
         """self.nb_bottles += 1

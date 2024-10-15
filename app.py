@@ -27,7 +27,7 @@ def auth():
     data = cur.fetchall()  # DATA EXEMPLE : [(1, 'CHALVIN', 'Axel', 'chalviax', 'axel')]
     if data:
         if data[0][3] == user and data[0][4] == password: #IF USERNAME AND PASSWORD ARE CORRECT
-            user_obj = User(data[0][1], data[0][2], data[0][3], data[0][4], None)
+            user_obj = User(data[0][1], data[0][2], data[0][3], data[0][4])
             session['user'] = {
                 'userid' : data[0][0],
                 'name' : data[0][1],
@@ -42,8 +42,9 @@ def auth():
 
 @app.route("/cave", methods=['POST'])
 def cave():
-    User.getcave(cur, session['user'])
-    return render_template("cave.html", user=session['user'])
+    user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
+    User.getcave(user_obj, cur, session['user'])
+    return render_template("cave.html", user=session['user'], userobj = user_obj)
 
 
 @app.route("/bottle", methods=['POST'])
