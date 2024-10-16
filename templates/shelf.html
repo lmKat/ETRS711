@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Etagères</title>
+
+    <!-- Lien CDN Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Logo ou Titre de l'application -->
+            <a class="navbar-brand" href="#">Gestion des Caves</a>
+
+            <!-- Bouton pour le menu hamburger sur petits écrans -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Liens de navigation -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cave">Caves</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/shelf">Etagères</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/bottle">Bouteilles</a>
+                    </li>
+                </ul>
+                <!-- Lien de déconnexion à droite -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="/">Déconnexion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container py-5">
+    <!-- Titre de bienvenue -->
+    <div class="text-center mb-4">
+        <h1 class="display-4">Bienvenue, {{ user.name }} {{ user.ftname }}</h1>
+    </div>
+
+    <!-- Section pour les caves et leurs étagères -->
+    <div class="accordion" id="cavesAccordion">
+        {% for cave in userobj.caves %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ cave.id }}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ cave.id }}" aria-expanded="true"
+                            aria-controls="collapse{{ cave.id }}">
+                        Cave - {{ cave.name }} (ID: {{ cave.id }})
+                    </button>
+                </h2>
+                <div id="collapse{{ cave.id }}" class="accordion-collapse collapse"
+                     aria-labelledby="heading{{ cave.id }}" data-bs-parent="#cavesAccordion">
+                    <div class="accordion-body">
+                        <!-- Etagères pour cette cave -->
+                        <h4 class="text-muted">Etagères dans la cave "{{ cave.name }}"</h4>
+                        <div class="accordion" id="shelvesAccordion{{ cave.id }}">
+                            {% for shelf in cave.shelves %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingShelf{{ shelf.idshelf }}">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseShelf{{ shelf.idshelf }}" aria-expanded="true"
+                                                aria-controls="collapseShelf{{ shelf.idshelf }}">
+                                            Etagère - {{ shelf.name }} (Capacité: {{ shelf.capacity }} bouteilles)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseShelf{{ shelf.idshelf }}" class="accordion-collapse collapse"
+                                         aria-labelledby="headingShelf{{ shelf.idshelf }}"
+                                         data-bs-parent="#shelvesAccordion{{ cave.id }}">
+                                        <div class="accordion-body">
+                                            <h4 class="text-muted">Bouteilles sur l'étagère</h4>
+                                            <ul class="list-group mb-4">
+                                                {% for bottle in shelf.bottles %}
+                                                    <li class="list-group-item">
+                                                        <div class="card mb-3">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">{{ bottle.domain }}
+                                                                    - {{ bottle.name }}</h5>
+                                                                <p class="card-text">
+                                                                    <strong>Type:</strong> {{ bottle.type }}<br>
+                                                                    <strong>Année:</strong> {{ bottle.year }}<br>
+                                                                    <strong>Région:</strong> {{ bottle.region }}<br>
+                                                                    <strong>Note
+                                                                        personnelle:</strong> {{ bottle.personal_rate }}
+                                                                    / 20<br>
+                                                                    <strong>Note
+                                                                        communauté:</strong> {{ bottle.community_rate }}
+                                                                    / 20<br>
+                                                                    <strong>Prix:</strong> {{ bottle.price }} €
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-warning">Il n'y a pas d'étagères dans cette cave pour le
+                                    moment.
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">Vous n'avez aucune cave pour le moment.</div>
+        {% endfor %}
+    </div>
+
+    <!-- Formulaire pour créer une nouvelle étagère -->
+    <div class="card mt-5">
+        <div class="card-header">
+            <h2 class="h4">Créer une nouvelle étagère</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="/shelf">
+                <!-- Sélectionner la cave à laquelle l'étagère est rattachée -->
+                <div class="mb-3">
+                    <label for="cave_select" class="form-label">Sélectionner la cave :</label>
+                    <select id="cave_select" name="cave_id" class="form-select" required>
+                        {% for cave in userobj.caves %}
+                            <option value="{{ cave.id }}">{{ cave.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="shelf_name" class="form-label">Nom de l'étagère :</label>
+                    <input type="text" id="shelf_name" name="shelf_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="shelf_capacity" class="form-label">Capacité de bouteilles :</label>
+                    <input type="number" id="shelf_capacity" name="shelf_capacity" class="form-control" required
+                           min="1">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Ajouter une étagère</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Lien CDN pour JavaScript Bootstrap (optionnel, pour les composants interactifs) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

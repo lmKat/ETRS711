@@ -40,20 +40,31 @@ def auth():
     else:
         return render_template("connection.html", error="Nom d'utilisateur inconnu ou mot de passe incorrect")
 
-@app.route("/cave", methods=['POST'])
+@app.route("/cave", methods=['GET','POST'])
 def cave():
 
     user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
     if request.form.get('cave_name'):
-        user_obj.createCave(cur, request.form['cave_name'], session['user']['userid'])
+        Cave.createCave(cur, request.form['cave_name'], session['user']['userid'])
     User.getcave(user_obj, cur, session['user'])
     return render_template("cave.html", user=session['user'], userobj = user_obj)
 
+@app.route("/shelf", methods=['GET','POST'])
+def shelf():
+    user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
+    if request.form.get('shelf_name'):
+        Shelf.createShelf(cur, request.form['shelf_name'], request.form['cave_id'], request.form['shelf_capacity'])
+    User.getcave(user_obj, cur, session['user'])
+    return render_template("shelf.html", user=session['user'], userobj=user_obj)
 
-@app.route("/bottle", methods=['POST'])
+@app.route("/bottle", methods=['GET','POST'])
 def bottle():
-    return render_template("bottle.html")
-
+    user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
+    if request.form.get('domain'):
+        print(request.form.get('shelf_id'))
+        Bottle.createBottle(cur, request.form.get('shelf_id'), request.form.get('domain'), request.form.get('name'), request.form.get('type'), request.form.get('year'), request.form.get('region'), request.form.get('tag_picture'), request.form.get('price'))
+    User.getcave(user_obj, cur, session['user'])
+    return render_template("bottle.html", user=session['user'], userobj=user_obj)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -27,7 +27,6 @@ class Shelf:
 
     def getBottles(self, cur):
         # Requête pour récupérer les bouteilles de chaque étagère
-        print(type(self.idshelf))
         cur.execute("SELECT * FROM public.bottle WHERE idshelf_fk=%s", (self.idshelf,))
         bottles = cur.fetchall()
 
@@ -41,3 +40,10 @@ class Shelf:
 
     def add_bottles(self, bottle):
         self.bottles.append(bottle)
+
+    @classmethod
+    def createShelf(cls, cur, namenum, cave_id, max_spaces):
+        cur.execute("INSERT INTO public.shelf (idcave_fk, namenum, total_space) VALUES (%s, %s, %s)", (cave_id, namenum, max_spaces))
+        cur.connection.commit()
+
+

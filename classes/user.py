@@ -29,8 +29,3 @@ class User:
             self.add_cave(cave)
 
             cave.getShelves(cur)
-
-    def createCave(self, cur, name, idUser):
-        cur.execute("INSERT INTO public.cave (iduser_fk, name) VALUES (%s, %s)", (idUser,name,))
-        cur.connection.commit()
-

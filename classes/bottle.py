@@ -1,11 +1,11 @@
 class Bottle:
 
-    #Private attributes
+    # Private attributes
     # domain, name, type, region, comments, tag_picture : str
     # year : datetime
     # personal_rate, community_rate, price : int
 
-    #Constructor
+    # Constructor
     def __init__(self, domain, name, type, year, region, comments, personal_rate, community_rate, tag_picture, price):
         self.domain = domain
         self.name = name
@@ -32,3 +32,10 @@ class Bottle:
 
     def average_rate(self):
         raise NotImplementedError
+
+
+    @classmethod
+    def createBottle(cls, cur, shelf_id, domain, name, type, year, region, tag_picture, price):
+        cur.execute("INSERT INTO public.bottle (idshelf_fk, domain, name, type, year, region, tag_picture, price) VALUES (%s, %s, %s, %s, %s, %s ,%s ,%s)", (shelf_id, domain, name, type, year, region, tag_picture, price))
+        cur.connection.commit()
+

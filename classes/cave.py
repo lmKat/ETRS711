@@ -35,6 +35,10 @@ class Cave:
         self.shelves.append(shelf)
 
 
+    @classmethod
+    def createCave(cls, cur, name, idUser):
+        cur.execute("INSERT INTO public.cave (iduser_fk, name) VALUES (%s, %s)", (idUser,name,))
+        cur.connection.commit()
 
     """    
     def getSortAllBottles(self, caracteristiques):
