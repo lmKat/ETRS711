@@ -33,6 +33,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/bottle">Bouteilles</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/rate">Archiver et noter</a>
+                    </li>
                 </ul>
                 <!-- Lien de déconnexion à droite -->
                 <ul class="navbar-nav">
@@ -98,6 +101,7 @@
                                                                     <strong>Note
                                                                         communauté:</strong> {{ bottle.community_rate }}
                                                                     / 20<br>
+                                                                    <strong>Etiquette:</strong> <img class="img-fluid" style="max-width: 150px; height: auto" src="{{ bottle.tag_picture }}"><br>
                                                                     <strong>Prix:</strong> {{ bottle.price }} €
                                                                 </p>
                                                             </div>
@@ -109,7 +113,7 @@
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="alert alert-warning">Il n'y a pas d'étagères dans cette cave pour le
+                                <div class="alert alert-warning">Il n'y a pas de bouteille pour le
                                     moment.
                                 </div>
                             {% endfor %}

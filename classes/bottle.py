@@ -6,7 +6,7 @@ class Bottle:
     # personal_rate, community_rate, price : int
 
     # Constructor
-    def __init__(self, domain, name, type, year, region, comments, personal_rate, community_rate, tag_picture, price):
+    def __init__(self, domain, name, type, year, region, comments, personal_rate, community_rate, tag_picture, price, idbottle):
         self.domain = domain
         self.name = name
         self.type = type
@@ -17,6 +17,7 @@ class Bottle:
         self.community_rate = community_rate
         self.tag_picture = tag_picture
         self.price = price
+        self.idbottle = idbottle
 
     def __str__(self):
         return f"{self.name} de {self.domain}, millésime {self.year} | {self.price}€"
@@ -39,3 +40,7 @@ class Bottle:
         cur.execute("INSERT INTO public.bottle (idshelf_fk, domain, name, type, year, region, tag_picture, price) VALUES (%s, %s, %s, %s, %s, %s ,%s ,%s)", (shelf_id, domain, name, type, year, region, tag_picture, price))
         cur.connection.commit()
 
+    @classmethod
+    def rate(cls, cur, idbottle, rate, comment):
+        cur.execute("UPDATE public.bottle SET personal_rate = %s, comments = %s WHERE idbottle = %s", (rate, comment, idbottle,))
+        cur.connection.commit()

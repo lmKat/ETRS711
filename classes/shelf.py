@@ -32,7 +32,7 @@ class Shelf:
 
         for bottle_data in bottles:
             bottle = Bottle(bottle_data[1], bottle_data[2], bottle_data[3], bottle_data[4], bottle_data[5],
-                            bottle_data[6], bottle_data[7], None, bottle_data[8], bottle_data[9])
+                            bottle_data[6], bottle_data[7], None, bottle_data[8], bottle_data[9], bottle_data[10])
             self.add_bottles(bottle)
 
     def count_bottles(self):

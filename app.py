@@ -61,10 +61,17 @@ def shelf():
 def bottle():
     user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
     if request.form.get('domain'):
-        print(request.form.get('shelf_id'))
         Bottle.createBottle(cur, request.form.get('shelf_id'), request.form.get('domain'), request.form.get('name'), request.form.get('type'), request.form.get('year'), request.form.get('region'), request.form.get('tag_picture'), request.form.get('price'))
     User.getcave(user_obj, cur, session['user'])
     return render_template("bottle.html", user=session['user'], userobj=user_obj)
+
+@app.route("/rate", methods=['GET','POST'])
+def rate():
+    user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
+    if request.form.get('rate'):
+        Bottle.rate(cur, request.form.get('idbottle'), request.form.get('rate'), request.form.get('comment'))
+    User.getcave(user_obj, cur, session['user'])
+    return render_template("rate.html", user=session['user'], userobj=user_obj)
 
 if __name__ == '__main__':
     app.run(debug=True)
