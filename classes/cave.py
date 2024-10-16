@@ -1,3 +1,6 @@
+from .shelf import Shelf
+
+
 class Cave:
 
     #Private attributes
@@ -9,21 +12,37 @@ class Cave:
         self.id = id
         self.shelves = shelves if shelves is not None else []
         self.nb_bottle = 0
+        self.name = "Unnamed"
 
 
-    def count_bottle_per_shelf(self):
+    def countBottlePerShelf(self):
         res = 0
         for shelf in self.shelves:
             res += shelf.count_bottles()
 
-    def get_shelves(identifier):
-        shelves = []
-        """requete sql SELCT * FROM etagere WHERE cave.id= id
-        shelves.append(Etagere(...))
-        """
-        nb_bottle = None
-        identifier = None
-        return Cave(nb_bottle, shelves, identifier)
+    def getShelves(self, cur):
+        # Requête pour récupérer les étagères de chaque cave
+        cur.execute("SELECT * FROM public.shelf WHERE idcave_fk=%s", (self.id,))
+        shelves = cur.fetchall()
 
-    def add_shelf(self, shelf):
+        for shelfData in shelves:
+            shelf = Shelf(shelfData[1], 0, 0, [])
+            shelf.name = shelfData[2]
+            self.addShelf(shelf)
+            shelf.getBottles(cur)
+
+    def addShelf(self, shelf):
         self.shelves.append(shelf)
+
+
+
+    """    
+    def getSortAllBottles(self, caracteristiques):
+        bottles = []
+        for shelf in self.shelves:
+            bottles.append(shelf.getAllBottles())
+        
+        
+        
+        
+"""

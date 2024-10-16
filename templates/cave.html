@@ -17,43 +17,49 @@
         </div>
 
         <!-- Section pour les caves -->
-        <div class="card mb-4">
-            <div class="card-header">
-                <h2 class="h4">Vos Caves</h2>
-            </div>
-            <div class="card-body">
-                <ul class="list-group">
-                    {% for cave in userobj.caves %}
-                        <li class="list-group-item">{{ cave.id }}</li>
-                        <ul>
-                        {% for shelf in cave.shelves %}
-                        <li>Etagère {{ shelf.idshelf }}</li>
-
-                            {% for bottle in shelf.bottles %}
-                                <ul>
-                                <li>{{ bottle.domain }}</li>
-                                <li>{{ bottle.name }}</li>
-                                <li>{{ bottle.type }}</li>
-                                <li>{{ bottle.year }}</li>
-                                <li>{{ bottle.region }}</li>
-                                <li>{{ bottle.personal_rate}}</li>
-                                <li>{{ bottle.community_rate }}</li>
-                                <li>{{ bottle.price }}€</li>
-                                </ul></br>
-                            {% endfor %}
-
-                        {% endfor %}
-
-                        </ul>
-                    {% else %}
-                        <li class="list-group-item">Vous n'avez aucune cave pour le moment.</li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div class="accordion" id="cavesAccordion">
+            {% for cave in userobj.caves %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ cave.id }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ cave.id }}" aria-expanded="true" aria-controls="collapse{{ cave.id }}">
+                            Cave {{ cave.id }} - {{ cave.name }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ cave.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ cave.id }}" data-bs-parent="#cavesAccordion">
+                        <div class="accordion-body">
+                            <h4 class="text-muted">Etagères de la cave</h4>
+                            <ul class="list-group mb-4">
+                                {% for shelf in cave.shelves %}
+                                    <li class="list-group-item">
+                                        <h5 class="fw-bold">Etagère {{ shelf.name }}</h5>
+                                        {% for bottle in shelf.bottles %}
+                                            <div class="card mb-3">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ bottle.domain }} - {{ bottle.name }}</h5>
+                                                    <p class="card-text">
+                                                        <strong>Type:</strong> {{ bottle.type }}<br>
+                                                        <strong>Année:</strong> {{ bottle.year }}<br>
+                                                        <strong>Région:</strong> {{ bottle.region }}<br>
+                                                        <strong>Note personnelle:</strong> {{ bottle.personal_rate }} / 20<br>
+                                                        <strong>Note communauté:</strong> {{ bottle.community_rate }} / 20<br>
+                                                        <strong>Prix:</strong> {{ bottle.price }} €
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning">Vous n'avez aucune cave pour le moment.</div>
+            {% endfor %}
         </div>
 
         <!-- Formulaire pour créer une nouvelle cave -->
-        <div class="card">
+        <div class="card mt-5">
             <div class="card-header">
                 <h2 class="h4">Créer une nouvelle cave</h2>
             </div>

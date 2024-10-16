@@ -24,7 +24,7 @@ def auth():
 
     #SQL QUERY GET USER INFO
     cur.execute("SELECT * FROM public.user WHERE login=%s", (user,))
-    data = cur.fetchall()  # DATA EXEMPLE : [(1, 'CHALVIN', 'Axel', 'chalviax', 'axel')]
+    data = cur.fetchall()
     if data:
         if data[0][3] == user and data[0][4] == password: #IF USERNAME AND PASSWORD ARE CORRECT
             user_obj = User(data[0][1], data[0][2], data[0][3], data[0][4])
@@ -42,7 +42,10 @@ def auth():
 
 @app.route("/cave", methods=['POST'])
 def cave():
+
     user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
+    if request.form.get('cave_name'):
+        user_obj.createCave(cur, request.form['cave_name'], session['user']['userid'])
     User.getcave(user_obj, cur, session['user'])
     return render_template("cave.html", user=session['user'], userobj = user_obj)
 
