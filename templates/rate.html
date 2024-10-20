@@ -62,32 +62,33 @@
         {% for cave in userobj.caves %}
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading{{ cave.id }}">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    <button class="accordion-button fw-bold fs-3 text-primary" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{ cave.id }}" aria-expanded="true"
                             aria-controls="collapse{{ cave.id }}">
-                        Cave - {{ cave.name }} (ID: {{ cave.id }})
+                        Cave - {{ cave.name }}
                     </button>
                 </h2>
                 <div id="collapse{{ cave.id }}" class="accordion-collapse collapse"
                      aria-labelledby="heading{{ cave.id }}" data-bs-parent="#cavesAccordion">
                     <div class="accordion-body">
                         <!-- Etagères pour cette cave -->
-                        <h4 class="text-muted">Etagères dans la cave "{{ cave.name }}"</h4>
+                        <h4 class="text-muted fs-5">Etagères de la cave</h4>
                         <div class="accordion" id="shelvesAccordion{{ cave.id }}">
                             {% for shelf in cave.shelves %}
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="headingShelf{{ shelf.idshelf }}">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        <button class="accordion-button fw-bold fs-4 text-dark" type="button"
+                                                data-bs-toggle="collapse"
                                                 data-bs-target="#collapseShelf{{ shelf.idshelf }}" aria-expanded="true"
                                                 aria-controls="collapseShelf{{ shelf.idshelf }}">
-                                            Etagère - {{ shelf.name }} (Capacité: {{ shelf.capacity }} bouteilles)
+                                            {{ shelf.name }} ({{ shelf.nb_bottles }} bouteille(s), {{ shelf.available_space }} place(s) restante(s).)
                                         </button>
                                     </h2>
                                     <div id="collapseShelf{{ shelf.idshelf }}" class="accordion-collapse collapse"
                                          aria-labelledby="headingShelf{{ shelf.idshelf }}"
                                          data-bs-parent="#shelvesAccordion{{ cave.id }}">
                                         <div class="accordion-body">
-                                            <h4 class="text-muted">Bouteilles sur l'étagère</h4>
+                                            <h4 class="text-muted fs-6">Bouteilles sur l'étagère</h4>
                                             <ul class="list-group mb-4">
                                                 {% for bottle in shelf.bottles %}
                                                     <li class="list-group-item">
@@ -131,42 +132,44 @@
             <div class="alert alert-warning">Vous n'avez aucune cave pour le moment.</div>
         {% endfor %}
     </div>
+</div>
 
-    <!-- Formulaire pour créer une nouvelle cave -->
-    <div class="card mt-5">
-        <div class="card-header">
-            <h2 class="h4">Archivez une bouteille</h2>
-        </div>
-        <div class="card-body">
-            <form method="post" action="/rate">
-                <div class="mb-3">
-                    <label for="bottle_name" class="form-label">Nom de la bouteille :</label>
-                    <select id="idbottle" name="idbottle" class="form-select" required>
-                        {% for cave in userobj.caves %}
-                            {% for shelf in cave.shelves %}
-                                {% for bottle in shelf.bottles %}
-                                    <option value="{{ bottle.idbottle }}">{{ cave.name }} - {{ shelf.name }}
-                                        - {{ bottle.name }}</option>
-                                {% endfor %}
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- Formulaire pour créer une nouvelle cave -->
+<div class="card mt-5">
+    <div class="card-header">
+        <h2 class="h4">Archivez une bouteille</h2>
+    </div>
+    <div class="card-body">
+        <form method="post" action="/rate">
+            <div class="mb-3">
+                <label for="bottle_name" class="form-label">Nom de la bouteille :</label>
+                <select id="idbottle" name="idbottle" class="form-select" required>
+                    {% for cave in userobj.caves %}
+                        {% for shelf in cave.shelves %}
+                            {% for bottle in shelf.bottles %}
+                                <option value="{{ bottle.idbottle }}">{{ cave.name }} - {{ shelf.name }}
+                                    - {{ bottle.name }}</option>
                             {% endfor %}
                         {% endfor %}
-                    </select>
-                </div>
+                    {% endfor %}
+                </select>
+            </div>
 
-                <div class="mb-3">
-                    <label for="rate" class="form-label">Note /20 :</label>
-                    <input type="number" id="rate" name="rate" class="form-control" required>
-                </div>
+            <div class="mb-3">
+                <label for="rate" class="form-label">Note /20 :</label>
+                <input type="number" id="rate" name="rate" class="form-control" required>
+            </div>
 
-                <div class="mb-3">
-                    <label for="comment" class="form-label">Commentaire :</label>
-                    <input type="text" id="comment" name="comment" class="form-control" required>
-                </div>
+            <div class="mb-3">
+                <label for="comment" class="form-label">Commentaire :</label>
+                <input type="text" id="comment" name="comment" class="form-control" required>
+            </div>
 
-                <button type="submit" class="btn btn-primary">Noter et commenter</button>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-primary">Noter et commenter</button>
+        </form>
     </div>
+</div>
 </div>
 
 <!-- Lien CDN pour JavaScript Bootstrap (optionnel, pour certains composants interactifs) -->

@@ -31,8 +31,9 @@ class Shelf:
         bottles = cur.fetchall()
 
         for bottle_data in bottles:
+            print(bottle_data)
             bottle = Bottle(bottle_data[1], bottle_data[2], bottle_data[3], bottle_data[4], bottle_data[5],
-                            bottle_data[6], bottle_data[7], None, bottle_data[8], bottle_data[9], bottle_data[10])
+                            bottle_data[6], bottle_data[7], Bottle.average_rate(cur, bottle_data[2]), bottle_data[8], bottle_data[9], bottle_data[10])
             self.add_bottles(bottle)
 
     def count_bottles(self):
@@ -40,6 +41,8 @@ class Shelf:
 
     def add_bottles(self, bottle):
         self.bottles.append(bottle)
+        self.nb_bottles += 1
+        self.available_space += -1
 
     @classmethod
     def createShelf(cls, cur, namenum, cave_id, max_spaces):

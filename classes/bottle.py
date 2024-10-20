@@ -1,3 +1,5 @@
+import numpy as np
+
 class Bottle:
 
     # Private attributes
@@ -13,7 +15,7 @@ class Bottle:
         self.year = year
         self.region = region
         self.comments = comments
-        self.personal_rate = personal_rate
+        self.personal_rate = personal_rate if personal_rate is not None else "Pas encore noté" #bottles if bottles is not None else []
         self.community_rate = community_rate
         self.tag_picture = tag_picture
         self.price = price
@@ -22,17 +24,18 @@ class Bottle:
     def __str__(self):
         return f"{self.name} de {self.domain}, millésime {self.year} | {self.price}€"
 
-    def create_bottle():
-        raise NotImplementedError
-
-    def archive_bottle(self):
-        raise NotImplementedError
-
-    def comment_bottle(self):
-        raise NotImplementedError
-
-    def average_rate(self):
-        raise NotImplementedError
+    @classmethod
+    def average_rate(cls, cur, name):
+        cur.execute("SELECT * FROM public.bottle WHERE name=%s", (name,))
+        bottles = cur.fetchall()
+        rates = []
+        for bottle in bottles:
+            if bottle[7]:
+                rates.append(bottle[7])
+        ret = np.mean(rates)
+        if len(rates) == 0:
+            ret = "Pas encore noté"
+        return ret
 
 
     @classmethod
