@@ -18,8 +18,6 @@ class User:
         self.password = password
         self.caves = caves if caves is not None else []
 
-    def connection(name, ftname, login):
-        raise DeprecationWarning("Not used to be removed")
 
     def addCave(self, cave):
         # Adds a Cave object to the user's caves list:

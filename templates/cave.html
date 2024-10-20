@@ -169,13 +169,17 @@
                                                             </div>
                                                         </div>
                                                     </li>
+                                                {% else %}
+                                                    <div class="alert alert-warning">Il n'y a pas de bouteilles pour le
+                                                        moment.
+                                                    </div>
                                                 {% endfor %}
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="alert alert-warning">Il n'y a pas de bouteille pour le moment.</div>
+                                <div class="alert alert-warning">Il n'y a pas d'étagères pour le moment.</div>
                             {% endfor %}
                         </div>
                     </div>

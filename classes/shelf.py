@@ -19,16 +19,6 @@ class Shelf:
         self.bottles = bottles if bottles is not None else []
         self.name = "Unnamed"
 
-    def add_bottle(self, bottle):
-        """self.nb_bottles += 1
-        self.available_space -= 1"""
-        raise DeprecationWarning("Not used to be removed")
-
-    def delete_bottle(self, bottle):
-        """self.nb_bottles += 1
-        self.available_space -= 1"""
-        raise DeprecationWarning("Not used to be removed")
-
     def getBottles(self, cur):
         # Retrieves bottles associated with the shelf from the database and populates the shelf's bottles list:
         # - cur (cursor): The database cursor for executing SQL commands.
@@ -40,10 +30,6 @@ class Shelf:
                             Bottle.getComments(cur, bottle_data[2]), bottle_data[7], Bottle.average_rate(cur, bottle_data[2]), bottle_data[8], bottle_data[9], bottle_data[10])
             self.add_bottles(bottle)
 
-    def count_bottles(self):
-        # Returns the current number of bottles on the shelf as an integer.
-        raise DeprecationWarning("Not used to be removed")
-        return self.nb_bottles
 
     def add_bottles(self, bottle):
         # Adds a Bottle object to the shelf's bottles list and updates the count of bottles and available space:

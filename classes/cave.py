@@ -17,12 +17,6 @@ class Cave:
         self.name = "Unnamed"
 
 
-    def countBottlePerShelf(self):
-        raise DeprecationWarning("Not used to be removed")
-        res = 0
-        for shelf in self.shelves:
-            res += shelf.count_bottles()
-
     def getShelves(self, cur):
         # Retrieves shelves associated with the cave from the database and populates the cave's shelves list:
         # - cur (cursor): The database cursor for executing SQL commands.
@@ -65,10 +59,3 @@ class Cave:
             Shelf.deleteShelf(cur, shelf[0])
         cur.execute("DELETE FROM public.cave WHERE idcave=%s", (idC,))
         cur.connection.commit()
-
-
-    def getSortAllBottles(self, caracteristiques):
-        raise DeprecationWarning("Not used to be removed")
-        bottles = []
-        for shelf in self.shelves:
-            bottles.append(shelf.getAllBottles())     

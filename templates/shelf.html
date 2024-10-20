@@ -169,13 +169,17 @@
                                                             </div>
                                                         </div>
                                                     </li>
+                                                {% else %}
+                                                    <div class="alert alert-warning">Il n'y a pas de bouteilles pour le
+                                                        moment.
+                                                    </div>
                                                 {% endfor %}
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="alert alert-warning">Il n'y a pas de bouteille pour le moment.</div>
+                                <div class="alert alert-warning">Il n'y a pas d'étagères pour le moment.</div>
                             {% endfor %}
                         </div>
                     </div>
@@ -252,38 +256,38 @@
     }
 </script>
 
-    <!-- Formulaire pour créer une nouvelle étagère -->
-    <div class="card mt-5">
-        <div class="card-header">
-            <h2 class="h4">Créer une nouvelle étagère</h2>
-        </div>
-        <div class="card-body">
-            <form method="post" action="/shelf">
-                <!-- Sélectionner la cave à laquelle l'étagère est rattachée -->
-                <div class="mb-3">
-                    <label for="cave_select" class="form-label">Sélectionner la cave :</label>
-                    <select id="cave_select" name="cave_id" class="form-select" required>
-                        {% for cave in userobj.caves %}
-                            <option value="{{ cave.id }}">{{ cave.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="shelf_name" class="form-label">Nom de l'étagère :</label>
-                    <input type="text" id="shelf_name" name="shelf_name" class="form-control" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="shelf_capacity" class="form-label">Capacité de bouteilles :</label>
-                    <input type="number" id="shelf_capacity" name="shelf_capacity" class="form-control" required
-                           min="1">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Ajouter une étagère</button>
-            </form>
-        </div>
+<!-- Formulaire pour créer une nouvelle étagère -->
+<div class="card mt-5">
+    <div class="card-header">
+        <h2 class="h4">Créer une nouvelle étagère</h2>
     </div>
+    <div class="card-body">
+        <form method="post" action="/shelf">
+            <!-- Sélectionner la cave à laquelle l'étagère est rattachée -->
+            <div class="mb-3">
+                <label for="cave_select" class="form-label">Sélectionner la cave :</label>
+                <select id="cave_select" name="cave_id" class="form-select" required>
+                    {% for cave in userobj.caves %}
+                        <option value="{{ cave.id }}">{{ cave.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="shelf_name" class="form-label">Nom de l'étagère :</label>
+                <input type="text" id="shelf_name" name="shelf_name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="shelf_capacity" class="form-label">Capacité de bouteilles :</label>
+                <input type="number" id="shelf_capacity" name="shelf_capacity" class="form-control" required
+                       min="1">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Ajouter une étagère</button>
+        </form>
+    </div>
+</div>
 </div>
 
 <!-- Lien CDN pour JavaScript Bootstrap (optionnel, pour les composants interactifs) -->
