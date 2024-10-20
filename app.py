@@ -1,6 +1,6 @@
 # IMPORTS
 from classes import *
-from flask import Flask, request, render_template, session, jsonify
+from flask import Flask, request, render_template, session, jsonify, redirect, url_for
 import psycopg2 as sql
 
 #FLASK DEFINITION
@@ -16,6 +16,22 @@ cur = conn.cursor()
 def index():
     return render_template("connection.html")
 
+## REGISTRATION
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "GET":
+        return render_template("register.html")
+    else:
+        login=request.form.get('username')
+        password=request.form.get('password')
+        name = request.form.get('name')
+        ftname = request.form.get('ftname')
+        cur.execute("INSERT INTO public.user (name, ftname, login, password) VALUES (%s, %s, %s, %s)", (name, ftname, login, password))
+        cur.connection.commit()
+        return redirect(url_for('index'))
+
+
+## CONNECTION
 @app.route("/auth", methods=['GET','POST'])
 def auth():
     #GET FORM VALUES
@@ -40,6 +56,15 @@ def auth():
     else:
         return render_template("connection.html", error="Nom d'utilisateur inconnu ou mot de passe incorrect")
 
+## SESSION DELETE
+@app.route("/deco", methods=['GET','POST'])
+def deco():
+    session.clear()
+    return redirect(url_for('index'))
+
+
+## MANAGEMENT
+
 @app.route("/cave", methods=['GET','POST'])
 def cave():
 
@@ -51,6 +76,9 @@ def cave():
 
 @app.route("/shelf", methods=['GET','POST'])
 def shelf():
+    if not session:
+        return redirect(url_for('index'))
+
     user_obj = User(session['user']['name'], session['user']['ftname'], session['user']['login'], None)
     if request.form.get('shelf_name'):
         Shelf.createShelf(cur, request.form['shelf_name'], request.form['cave_id'], request.form['shelf_capacity'])
@@ -72,6 +100,7 @@ def rate():
         Bottle.rate(cur, request.form.get('idbottle'), request.form.get('rate'), request.form.get('comment'))
     User.getcave(user_obj, cur, session['user'])
     return render_template("rate.html", user=session['user'], userobj=user_obj)
+
 
 ## DELETE ELEMENTS
 
