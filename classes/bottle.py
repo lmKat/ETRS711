@@ -14,8 +14,8 @@ class Bottle:
         self.type = type
         self.year = year
         self.region = region
-        self.comments = comments
-        self.personal_rate = personal_rate if personal_rate is not None else "Pas encore noté" #bottles if bottles is not None else []
+        self.comments = comments if comments is not None else []
+        self.personal_rate = personal_rate if personal_rate is not None else "Pas encore noté"
         self.community_rate = community_rate
         self.tag_picture = tag_picture
         self.price = price
@@ -52,3 +52,19 @@ class Bottle:
     def deleteBottle(cls, cur, idB):
         cur.execute("DELETE FROM public.bottle WHERE idbottle=%s", (idB,))
         cur.connection.commit()
+
+    @classmethod
+    def getComments(cls, cur, name):
+        cur.execute("SELECT comments, personal_rate, idbottle, idshelf_fk FROM public.bottle WHERE name=%s", (name,))
+        infos = cur.fetchall()
+        comments={}
+        for info in infos:
+            cur.execute("SELECT idcave_fk FROM public.shelf WHERE idshelf=%s", (info[3],))
+            idcave = cur.fetchone()
+            cur.execute("SELECT iduser_fk FROM public.cave WHERE idcave=%s", (idcave,))
+            iduser = cur.fetchone()
+            cur.execute("SELECT name, ftname FROM public.user WHERE iduser=%s", (iduser,))
+            name = cur.fetchone()
+            if info[0] and info[1]:
+                comments[name[0] + " " + name[1]]= (info[0], info[1])
+        return comments

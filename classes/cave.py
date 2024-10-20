@@ -26,7 +26,6 @@ class Cave:
         shelves = cur.fetchall()
 
         for shelfData in shelves:
-            print(shelfData)
             shelf = Shelf(shelfData[1], shelfData[3], 0, [])
             shelf.name = shelfData[2]
             self.addShelf(shelf)

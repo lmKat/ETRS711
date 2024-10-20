@@ -29,10 +29,9 @@ class Shelf:
         # Requête pour récupérer les bouteilles de chaque étagère
         cur.execute("SELECT * FROM public.bottle WHERE idshelf_fk=%s", (self.idshelf,))
         bottles = cur.fetchall()
-
         for bottle_data in bottles:
             bottle = Bottle(bottle_data[1], bottle_data[2], bottle_data[3], bottle_data[4], bottle_data[5],
-                            bottle_data[6], bottle_data[7], Bottle.average_rate(cur, bottle_data[2]), bottle_data[8], bottle_data[9], bottle_data[10])
+                            Bottle.getComments(cur, bottle_data[2]), bottle_data[7], Bottle.average_rate(cur, bottle_data[2]), bottle_data[8], bottle_data[9], bottle_data[10])
             self.add_bottles(bottle)
 
     def count_bottles(self):
