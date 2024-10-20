@@ -135,7 +135,7 @@
                     <select id="shelf_id" name="shelf_id" class="form-select" required>
                         {% for cave in userobj.caves %}
                             {% for shelf in cave.shelves %}
-                                <option value="{{ shelf.idshelf }}">Cave {{ cave.name }} : {{ shelf.name }}</option>
+                                <option {% if shelf.available_space == 0 %} disabled {% endif %} value="{{ shelf.idshelf }}">Cave {{ cave.name }} : {{ shelf.name }} - {{ shelf.available_space }} places</option>
                             {% endfor %}
                         {% endfor %}
                     </select>
