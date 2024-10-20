@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15077fcb-66db-4dac-9d32-17bcc09d669b" name="Changes" comment="feat : Inscription (pre nettoyage des pages HTML)">
+    <list default="true" id="15077fcb-66db-4dac-9d32-17bcc09d669b" name="Changes" comment="feat : Gestion des commentaires et notes et affichage">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/bottle.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/bottle.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/cave.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/cave.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/shelf.py" beforeDir="false" afterPath="$PROJECT_DIR$/classes/shelf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/bottle.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/bottle.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/cave.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/cave.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/rate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/rate.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/shelf.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shelf.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,7 +151,7 @@
       <workItem from="1728886516992" duration="1775000" />
       <workItem from="1728990930526" duration="14436000" />
       <workItem from="1729076717744" duration="13974000" />
-      <workItem from="1729409776062" duration="10990000" />
+      <workItem from="1729409776062" duration="12770000" />
     </task>
     <task id="LOCAL-00001" summary="feature : creation de class cave + ajout de recupeEtagere">
       <option name="closed" value="true" />
@@ -268,7 +265,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729417924910</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="feat : Gestion des commentaires et notes et affichage">
+      <option name="closed" value="true" />
+      <created>1729421251729</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1729421251729</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,10 +302,11 @@
     <MESSAGE value="feat : impossibilité d'ajouter une bouteille quand l'étagère est pleine" />
     <MESSAGE value="feat : Supression Cave, Etagere et Bouteille (recusif si cave ou etagere)" />
     <MESSAGE value="feat : Inscription (pre nettoyage des pages HTML)" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat : Inscription (pre nettoyage des pages HTML)" />
+    <MESSAGE value="feat : Gestion des commentaires et notes et affichage" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat : Gestion des commentaires et notes et affichage" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Projet_Python_Fac$Projet_Python_Fac.coverage" NAME="Projet Python Fac Coverage Results" MODIFIED="1729420578528" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Projet_Python_Fac$Projet_Python_Fac.coverage" NAME="Projet Python Fac Coverage Results" MODIFIED="1729423032805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Projet_Python_Fac$main.coverage" NAME="main Coverage Results" MODIFIED="1728465009644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

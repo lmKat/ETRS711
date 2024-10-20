@@ -52,34 +52,29 @@
 <!-- ---------------------------------------------------------------------------------------------------------- -->
 
 
-<!-- Section pour les caves -->
 <div class="container py-5">
-    <!-- Titre de bienvenue -->
     <div class="text-center mb-4">
         <h1 class="display-4">Bienvenue, {{ user.name }} {{ user.ftname }}</h1>
     </div>
 
-    <!-- Section pour les caves -->
     <div class="accordion" id="cavesAccordion">
         {% for cave in userobj.caves %}
             <div class="accordion-item">
                 <h2 class="accordion-header d-flex justify-content-between align-items-center"
                     id="heading{{ cave.id }}">
                     <button class="accordion-button fw-bold fs-3 text-primary" type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapse{{ cave.id }}" aria-expanded="true"
+                            data-bs-toggle="collapse" data-bs-target="#collapse{{ cave.id }}" aria-expanded="true"
                             aria-controls="collapse{{ cave.id }}">
                         Cave - {{ cave.name }}
                     </button>
-                    <!-- Bouton de suppression de la cave -->
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteCave({{ cave.id }})">
                         <i class="bi bi-x-lg"></i>
                     </button>
                 </h2>
                 <div id="collapse{{ cave.id }}" class="accordion-collapse collapse"
-                     aria-labelledby="heading{{ cave.id }}" data-bs-parent="#cavesAccordion">
+                     aria-labelledby="heading{{ cave.id }}"
+                     data-bs-parent="#cavesAccordion">
                     <div class="accordion-body">
-                        <!-- Etagères pour cette cave -->
                         <h4 class="text-muted fs-5">Etagères de la cave</h4>
                         <div class="accordion" id="shelvesAccordion{{ cave.id }}">
                             {% for shelf in cave.shelves %}
@@ -89,12 +84,10 @@
                                         <button class="accordion-button fw-bold fs-4 text-dark" type="button"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target="#collapseShelf{{ shelf.idshelf }}"
-                                                aria-expanded="true"
-                                                aria-controls="collapseShelf{{ shelf.idshelf }}">
+                                                aria-expanded="true" aria-controls="collapseShelf{{ shelf.idshelf }}">
                                             {{ shelf.name }} ({{ shelf.nb_bottles }}
                                             bouteille(s), {{ shelf.available_space }} place(s) restante(s).)
                                         </button>
-                                        <!-- Bouton de suppression de l'étagère -->
                                         <button type="button" class="btn btn-danger btn-sm"
                                                 onclick="deleteShelf({{ shelf.idshelf }})">
                                             <i class="bi bi-x-lg"></i>
@@ -112,13 +105,11 @@
                                                             <div class="card-body">
                                                                 <h5 class="card-title">{{ bottle.domain }}
                                                                     - {{ bottle.name }}
-                                                                    <!-- Bouton de suppression de la bouteille -->
                                                                     <button type="button" class="btn btn-danger btn-sm"
                                                                             onclick="deleteBottle({{ bottle.idbottle }})">
                                                                         <i class="bi bi-x-lg"></i>
                                                                     </button>
                                                                 </h5>
-
                                                                 <p class="card-text">
                                                                     <strong>Type:</strong> {{ bottle.type }}<br>
                                                                     <strong>Année:</strong> {{ bottle.year }}<br>
@@ -129,12 +120,52 @@
                                                                     <strong>Note
                                                                         communauté:</strong> {{ bottle.community_rate }}
                                                                     / 20<br>
-                                                                    <strong>Etiquette:</strong> <img
-                                                                        class="img-fluid"
-                                                                        style="max-width: 150px; height: auto"
-                                                                        src="{{ bottle.tag_picture }}"><br>
+                                                                    <strong>Etiquette:</strong> <img class="img-fluid"
+                                                                                                     style="max-width: 150px; height: auto"
+                                                                                                     src="{{ bottle.tag_picture }}"><br>
                                                                     <strong>Prix:</strong> {{ bottle.price }} €
                                                                 </p>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Onglet de commentaires -->
+                                                        <div class="accordion"
+                                                             id="commentsAccordion{{ bottle.idbottle }}">
+                                                            <div class="accordion-item">
+                                                                <h2 class="accordion-header"
+                                                                    id="headingComments{{ bottle.idbottle }}">
+                                                                    <button class="accordion-button" type="button"
+                                                                            data-bs-toggle="collapse"
+                                                                            data-bs-target="#collapseComments{{ bottle.idbottle }}"
+                                                                            aria-expanded="false"
+                                                                            aria-controls="collapseComments{{ bottle.idbottle }}">
+                                                                        Commentaires
+                                                                    </button>
+                                                                </h2>
+                                                                <div id="collapseComments{{ bottle.idbottle }}"
+                                                                     class="accordion-collapse collapse"
+                                                                     aria-labelledby="headingComments{{ bottle.idbottle }}">
+                                                                    <div class="accordion-body">
+                                                                        <ul class="list-group">
+
+                                                                            {% for comment in bottle.comments %}
+                                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                    <div>
+                                                                                        <strong>{{ comment }}</strong>
+                                                                                        <p class="mb-1">{{ bottle.comments[comment][0] }}</p>
+                                                                                    </div>
+                                                                                    <span class="badge bg-primary rounded-pill">{{ bottle.comments[comment][1] }}/20</span>
+                                                                                </li>
+                                                                            {% endfor %}
+
+
+                                                                            {% if bottle.comments | length == 0 %}
+                                                                                <li class="list-group-item text-muted">
+                                                                                    Aucun commentaire.
+                                                                                </li>
+                                                                            {% endif %}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -144,9 +175,7 @@
                                     </div>
                                 </div>
                             {% else %}
-                                <div class="alert alert-warning">Il n'y a pas de bouteille pour le
-                                    moment.
-                                </div>
+                                <div class="alert alert-warning">Il n'y a pas de bouteille pour le moment.</div>
                             {% endfor %}
                         </div>
                     </div>
