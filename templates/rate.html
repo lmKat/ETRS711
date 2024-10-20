@@ -51,6 +51,8 @@
 
 <!-- ---------------------------------------------------------------------------------------------------------- -->
 
+
+<!-- Section pour les caves -->
 <div class="container py-5">
     <!-- Titre de bienvenue -->
     <div class="text-center mb-4">
@@ -61,11 +63,17 @@
     <div class="accordion" id="cavesAccordion">
         {% for cave in userobj.caves %}
             <div class="accordion-item">
-                <h2 class="accordion-header" id="heading{{ cave.id }}">
-                    <button class="accordion-button fw-bold fs-3 text-primary" type="button" data-bs-toggle="collapse"
+                <h2 class="accordion-header d-flex justify-content-between align-items-center"
+                    id="heading{{ cave.id }}">
+                    <button class="accordion-button fw-bold fs-3 text-primary" type="button"
+                            data-bs-toggle="collapse"
                             data-bs-target="#collapse{{ cave.id }}" aria-expanded="true"
                             aria-controls="collapse{{ cave.id }}">
                         Cave - {{ cave.name }}
+                    </button>
+                    <!-- Bouton de suppression de la cave -->
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteCave({{ cave.id }})">
+                        <i class="bi bi-x-lg"></i>
                     </button>
                 </h2>
                 <div id="collapse{{ cave.id }}" class="accordion-collapse collapse"
@@ -76,12 +84,20 @@
                         <div class="accordion" id="shelvesAccordion{{ cave.id }}">
                             {% for shelf in cave.shelves %}
                                 <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingShelf{{ shelf.idshelf }}">
+                                    <h2 class="accordion-header d-flex justify-content-between align-items-center"
+                                        id="headingShelf{{ shelf.idshelf }}">
                                         <button class="accordion-button fw-bold fs-4 text-dark" type="button"
                                                 data-bs-toggle="collapse"
-                                                data-bs-target="#collapseShelf{{ shelf.idshelf }}" aria-expanded="true"
+                                                data-bs-target="#collapseShelf{{ shelf.idshelf }}"
+                                                aria-expanded="true"
                                                 aria-controls="collapseShelf{{ shelf.idshelf }}">
-                                            {{ shelf.name }} ({{ shelf.nb_bottles }} bouteille(s), {{ shelf.available_space }} place(s) restante(s).)
+                                            {{ shelf.name }} ({{ shelf.nb_bottles }}
+                                            bouteille(s), {{ shelf.available_space }} place(s) restante(s).)
+                                        </button>
+                                        <!-- Bouton de suppression de l'étagère -->
+                                        <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="deleteShelf({{ shelf.idshelf }})">
+                                            <i class="bi bi-x-lg"></i>
                                         </button>
                                     </h2>
                                     <div id="collapseShelf{{ shelf.idshelf }}" class="accordion-collapse collapse"
@@ -91,11 +107,18 @@
                                             <h4 class="text-muted fs-6">Bouteilles sur l'étagère</h4>
                                             <ul class="list-group mb-4">
                                                 {% for bottle in shelf.bottles %}
-                                                    <li class="list-group-item">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
                                                         <div class="card mb-3">
                                                             <div class="card-body">
                                                                 <h5 class="card-title">{{ bottle.domain }}
-                                                                    - {{ bottle.name }}</h5>
+                                                                    - {{ bottle.name }}
+                                                                    <!-- Bouton de suppression de la bouteille -->
+                                                                    <button type="button" class="btn btn-danger btn-sm"
+                                                                            onclick="deleteBottle({{ bottle.idbottle }})">
+                                                                        <i class="bi bi-x-lg"></i>
+                                                                    </button>
+                                                                </h5>
+
                                                                 <p class="card-text">
                                                                     <strong>Type:</strong> {{ bottle.type }}<br>
                                                                     <strong>Année:</strong> {{ bottle.year }}<br>
@@ -106,9 +129,10 @@
                                                                     <strong>Note
                                                                         communauté:</strong> {{ bottle.community_rate }}
                                                                     / 20<br>
-                                                                    <strong>Etiquette:</strong> <img class="img-fluid"
-                                                                                                     style="max-width: 150px; height: auto"
-                                                                                                     src="{{ bottle.tag_picture }}"><br>
+                                                                    <strong>Etiquette:</strong> <img
+                                                                        class="img-fluid"
+                                                                        style="max-width: 150px; height: auto"
+                                                                        src="{{ bottle.tag_picture }}"><br>
                                                                     <strong>Prix:</strong> {{ bottle.price }} €
                                                                 </p>
                                                             </div>
@@ -133,6 +157,72 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    // Suppression de la cave
+    function deleteCave(caveId) {
+        if (confirm("Voulez-vous vraiment supprimer cette cave, ses étagères et ses bouteilles ?")) {
+            fetch(`/delete/cave/${caveId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Cave supprimée avec succès`);
+                        location.reload(); // Recharger la page après la suppression
+                    } else {
+                        alert('Erreur lors de la suppression de la cave');
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+    }
+
+    // Suppression de l'étagère
+    function deleteShelf(shelfId) {
+        if (confirm("Voulez-vous vraiment supprimer cette étagère et ses bouteilles ?")) {
+            fetch(`/delete/shelf/${shelfId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Étagère supprimée avec succès`);
+                        location.reload(); // Recharger la page après la suppression
+                    } else {
+                        alert('Erreur lors de la suppression de l\'étagère');
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+    }
+
+    // Suppression de la bouteille
+    function deleteBottle(bottleId) {
+        if (confirm("Voulez-vous vraiment supprimer cette bouteille ?")) {
+            fetch(`/delete/bottle/${bottleId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Bouteille supprimée avec succès`);
+                        location.reload(); // Recharger la page après la suppression
+                    } else {
+                        alert('Erreur lors de la suppression de la bouteille');
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+        }
+    }
+</script>
+
 
 <!-- ---------------------------------------------------------------------------------------------------------- -->
 <!-- Formulaire pour créer une nouvelle cave -->
@@ -170,9 +260,11 @@
         </form>
     </div>
 </div>
-</div>
+
 
 <!-- Lien CDN pour JavaScript Bootstrap (optionnel, pour certains composants interactifs) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </body>
 </html>

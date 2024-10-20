@@ -42,6 +42,17 @@ class Cave:
         cur.execute("INSERT INTO public.cave (iduser_fk, name) VALUES (%s, %s)", (idUser,name,))
         cur.connection.commit()
 
+    @classmethod
+    def deleteCave(cls, cur, idC):
+        cur.execute("SELECT idshelf FROM public.shelf WHERE idcave_fk=%s", (idC,))
+        shelves = cur.fetchall()
+        for shelf in shelves:
+            Shelf.deleteShelf(cur, shelf[0])
+        cur.execute("DELETE FROM public.cave WHERE idcave=%s", (idC,))
+        cur.connection.commit()
+
+
+
     """    
     def getSortAllBottles(self, caracteristiques):
         bottles = []

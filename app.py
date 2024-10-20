@@ -1,6 +1,6 @@
 # IMPORTS
 from classes import *
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, jsonify
 import psycopg2 as sql
 
 #FLASK DEFINITION
@@ -72,6 +72,29 @@ def rate():
         Bottle.rate(cur, request.form.get('idbottle'), request.form.get('rate'), request.form.get('comment'))
     User.getcave(user_obj, cur, session['user'])
     return render_template("rate.html", user=session['user'], userobj=user_obj)
+
+## DELETE ELEMENTS
+
+@app.route('/delete/cave/<int:cave_id>', methods=['DELETE'])
+def delete_cave(cave_id):
+    # supprimer la cave avec l'id cave_id
+    Cave.deleteCave(cur, cave_id)
+    return jsonify({'message': f'Cave supprimée avec succès'}), 200
+
+@app.route('/delete/shelf/<int:shelf_id>', methods=['DELETE'])
+def delete_shelf(shelf_id):
+    # supprimer l'étagère avec l'id shelf_id
+    Shelf.deleteShelf(cur, shelf_id)
+    return jsonify({'message': f'Étagère supprimée avec succès'}), 200
+
+@app.route('/delete/bottle/<int:bottle_id>', methods=['DELETE'])
+def delete_bottle(bottle_id):
+    # supprimer la bouteille avec l'id bottle_id
+    Bottle.deleteBottle(cur, bottle_id)
+    return jsonify({'message': f'Bouteille supprimée avec succès'}), 200
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

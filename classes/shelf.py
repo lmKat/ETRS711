@@ -31,7 +31,6 @@ class Shelf:
         bottles = cur.fetchall()
 
         for bottle_data in bottles:
-            print(bottle_data)
             bottle = Bottle(bottle_data[1], bottle_data[2], bottle_data[3], bottle_data[4], bottle_data[5],
                             bottle_data[6], bottle_data[7], Bottle.average_rate(cur, bottle_data[2]), bottle_data[8], bottle_data[9], bottle_data[10])
             self.add_bottles(bottle)
@@ -47,6 +46,15 @@ class Shelf:
     @classmethod
     def createShelf(cls, cur, namenum, cave_id, max_spaces):
         cur.execute("INSERT INTO public.shelf (idcave_fk, namenum, total_space) VALUES (%s, %s, %s)", (cave_id, namenum, max_spaces))
+        cur.connection.commit()
+
+    @classmethod
+    def deleteShelf(cls, cur, idS):
+        cur.execute("SELECT idbottle FROM public.bottle WHERE idshelf_fk=%s", (idS,))
+        bottles = cur.fetchall()
+        for bottle in bottles:
+            Bottle.deleteBottle(cur, bottle[0])
+        cur.execute("DELETE FROM public.shelf WHERE idshelf=%s", (idS,))
         cur.connection.commit()
 
 

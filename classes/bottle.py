@@ -47,3 +47,8 @@ class Bottle:
     def rate(cls, cur, idbottle, rate, comment):
         cur.execute("UPDATE public.bottle SET personal_rate = %s, comments = %s WHERE idbottle = %s", (rate, comment, idbottle,))
         cur.connection.commit()
+
+    @classmethod
+    def deleteBottle(cls, cur, idB):
+        cur.execute("DELETE FROM public.bottle WHERE idbottle=%s", (idB,))
+        cur.connection.commit()
